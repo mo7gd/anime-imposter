@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#100a22">
+<title>Anime Imposter</title>
+<style>
+:root{--bg:#100a22;--sf:#1b1238;--sf2:#271a4d;--pk:#ff3d8b;--cy:#35e0ff;--tx:#f4efff;--mu:#9d90c9;--ok:#5dffb0;--r:18px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:"Tajawal","Cairo","Segoe UI",system-ui,sans-serif}
+body{background:radial-gradient(600px 400px at 85% -5%,#ff3d8b44,transparent),radial-gradient(500px 400px at 0% 105%,#35e0ff30,transparent),var(--bg);overflow-x:hidden}
+#app{max-width:520px;margin:0 auto;min-height:100%;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px calc(env(safe-area-inset-bottom,0px) + 22px)}
+.screen{animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1{font-size:34px;margin:6px 0 2px;font-weight:900;letter-spacing:-.5px}
+h1 b{color:var(--pk);text-shadow:0 0 22px #ff3d8bcc}
+h2{font-size:22px;margin:0 0 12px}
+p.sub{color:var(--mu);margin:0 0 18px}
+.card{background:var(--sf);border:1px solid #ffffff14;border-radius:var(--r);padding:16px;margin-bottom:14px}
+.card h3{margin:0 0 12px;font-size:16px;color:var(--cy)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.step{display:flex;align-items:center;gap:14px}
+.step button{width:46px;height:46px;border-radius:50%;border:0;background:var(--sf2);color:var(--tx);font-size:26px;font-weight:700}
+.step span{font-size:28px;font-weight:900;min-width:44px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 14px;border-radius:999px;border:1.5px solid #ffffff22;background:transparent;color:var(--tx);font:inherit;font-size:15px}
+.chip.on{background:var(--pk);border-color:var(--pk);box-shadow:0 0 18px #ff3d8b88;font-weight:800}
+.chip.cy.on{background:var(--cy);border-color:var(--cy);color:#06202a;box-shadow:0 0 18px #35e0ff77}
+.btn{display:block;width:100%;padding:18px;border:0;border-radius:var(--r);background:linear-gradient(135deg,var(--pk),#b43dff);color:#fff;font:inherit;font-size:20px;font-weight:900;box-shadow:0 8px 28px #ff3d8b55;margin-top:10px}
+.btn:active{transform:scale(.98)}
+.btn.alt{background:var(--sf2);box-shadow:none;font-size:17px;font-weight:700}
+.btn.ghost{background:transparent;border:1.5px solid #ffffff2a;box-shadow:none;font-size:16px;font-weight:700}
+input[type=text]{width:100%;padding:14px;border-radius:14px;border:1.5px solid #ffffff22;background:var(--bg);color:var(--tx);font:inherit;font-size:17px;margin-bottom:10px}
+input:focus,button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.big{text-align:center;padding:30px 10px}
+.who{font-size:15px;color:var(--mu)}
+.name{font-size:36px;font-weight:900;margin:6px 0 20px}
+.secret{border-radius:26px;padding:34px 16px;margin:10px 0 14px;text-align:center;background:linear-gradient(160deg,var(--sf2),var(--sf));border:2px solid var(--cy);box-shadow:0 0 36px #35e0ff44}
+.secret.imp{border-color:var(--pk);box-shadow:0 0 40px #ff3d8b88}
+.secret small{color:var(--mu);display:block;margin-bottom:10px}
+.secret strong{font-size:38px;font-weight:900;line-height:1.25;direction:ltr;display:block}
+.secret.imp strong{direction:rtl;color:var(--pk)}
+.prog{height:6px;border-radius:9px;background:var(--sf2);overflow:hidden;margin-bottom:16px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--cy),var(--pk));transition:width .3s}
+.timer{font-size:84px;font-weight:900;text-align:center;font-variant-numeric:tabular-nums;direction:ltr;margin:6px 0;text-shadow:0 0 30px #35e0ff99}
+.timer.end{color:var(--pk);text-shadow:0 0 30px #ff3d8bcc;animation:pulse .6s infinite alternate}
+@keyframes pulse{to{transform:scale(1.06)}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{text-align:center}.stat b{display:block;font-size:34px;color:var(--cy)}.stat span{color:var(--mu);font-size:14px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.ic{background:var(--sf);border:0;color:var(--tx);width:44px;height:44px;border-radius:50%;font-size:20px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const DB={
+"Naruto":["Naruto Uzumaki","Sasuke Uchiha","Sakura Haruno","Kakashi Hatake","Itachi Uchiha","Madara Uchiha","Hinata Hyuga","Rock Lee","Gaara","Jiraiya","Tsunade","Orochimaru","Minato Namikaze","Neji Hyuga","Shikamaru Nara","Pain (Nagato)","Obito Uchiha","Might Guy","Kisame Hoshigaki","Deidara","Sasori","Hidan","Konan","Choji Akimichi","Kiba Inuzuka","Shino Aburame","Temari","Kankuro","Zabuza Momochi","Haku","Killer Bee","Tobirama Senju","Hiruzen Sarutobi","Iruka Umino","Kabuto Yakushi","Boruto Uzumaki"],
+"Dragon Ball":["Goku","Vegeta","Gohan","Piccolo","Krillin","Frieza","Cell","Majin Buu","Trunks","Goten","Bulma","Master Roshi","Beerus","Whis","Android 18","Android 17","Yamcha","Tien Shinhan","Chiaotzu","Raditz","Nappa","Bardock","Broly","Hit","Jiren","Zamasu","Videl","Chi-Chi","Mr. Satan","Dr. Gero","Cooler","Gogeta","Vegito","Shenron","Dende","Android 16"],
+"Hunter x Hunter":["Gon Freecss","Killua Zoldyck","Kurapika","Leorio Paradinight","Hisoka","Chrollo Lucilfer","Netero","Meruem","Illumi Zoldyck","Biscuit Krueger","Kite","Feitan","Phinks","Nobunaga","Machi","Shalnark","Uvogin","Pitou","Neferpitou","Komugi","Ging Freecss","Kalluto","Alluka","Silva Zoldyck","Zeno Zoldyck","Knov","Morel","Pokkle","Hanzo","Razor","Bisky","Wing","Zushi","Gittarackur","Kastro","Nanika"],
+"One Piece":["Monkey D. Luffy","Roronoa Zoro","Nami","Usopp","Sanji","Tony Tony Chopper","Nico Robin","Franky","Brook","Jinbe","Portgas D. Ace","Sabo","Shanks","Whitebeard","Blackbeard","Kaido","Big Mom","Trafalgar Law","Boa Hancock","Dracule Mihawk","Gol D. Roger","Buggy","Crocodile","Doflamingo","Smoker","Akainu","Aokiji","Kizaru","Vivi","Yamato","Eustass Kid","Bartolomeo","Rob Lucci","Koby","Garp","Rayleigh"],
+"Bleach":["Ichigo Kurosaki","Rukia Kuchiki","Renji Abarai","Byakuya Kuchiki","Orihime Inoue","Uryu Ishida","Yasutora Sado","Kisuke Urahara","Yoruichi Shihoin","Sosuke Aizen","Gin Ichimaru","Kaname Tosen","Toshiro Hitsugaya","Kenpachi Zaraki","Yamamoto Genryusai","Mayuri Kurotsuchi","Ulquiorra Cifer","Grimmjow Jaegerjaquez","Starrk","Nelliel","Szayelaporro","Barragan","Soi Fon","Rangiku Matsumoto","Shunsui Kyoraku","Jushiro Ukitake","Ikkaku Madarame","Yumichika Ayasegawa","Isshin Kurosaki","Yhwach","Retsu Unohana","Komamura","Kon","Nnoitra","Halibel","Coyote Starrk"],
+"Black Clover":["Asta","Yuno","Noelle Silva","Yami Sukehiro","Julius Novachrono","Charmy Pappitson","Vanessa Enoteca","Luck Voltia","Magna Swing","Gauche Adlai","Gordon Agrippa","Grey","Secre Swiftdry","Finral Roulacase","Zora Ideale","Nacht Faust","William Vangeance","Mereoleona","Fuegoleon","Nozel Silva","Licht","Lucius Zogratis","Mimosa Vermillion","Klaus Lunettes","Langris Vaude","Zenon Zogratis","Dante Zogratis","Vetto","Rill Boismortier","Sally","Rades Spirito","Jack the Ripper","Catherine","Heath Grice","Fana","Sister Lily"],
+"Demon Slayer":["Tanjiro Kamado","Nezuko Kamado","Zenitsu Agatsuma","Inosuke Hashibira","Giyu Tomioka","Shinobu Kocho","Kyojuro Rengoku","Tengen Uzui","Mitsuri Kanroji","Muichiro Tokito","Gyomei Himejima","Sanemi Shinazugawa","Obanai Iguro","Muzan Kibutsuji","Kokushibo","Doma","Akaza","Daki","Gyutaro","Rui","Enmu","Kanao Tsuyuri","Genya Shinazugawa","Sakonji Urokodaki","Kagaya Ubuyashiki","Hantengu","Gyokko","Kaigaku","Sabito","Makomo","Kanae Kocho","Tamayo","Yushiro","Susamaru","Yahaba","Murata"],
+"Attack on Titan":["Eren Yeager","Mikasa Ackerman","Armin Arlert","Levi Ackerman","Erwin Smith","Hange Zoe","Reiner Braun","Bertholdt Hoover","Annie Leonhart","Zeke Yeager","Jean Kirstein","Connie Springer","Sasha Blouse","Historia Reiss","Ymir","Porco Galliard","Pieck Finger","Falco Grice","Gabi Braun","Grisha Yeager","Carla Yeager","Kenny Ackerman","Floch Forster","Pixis","Hannes","Eld Jinn","Petra Ral","Oluo Bozado","Gunther Schultz","Moblit Berner","Dot Pixis","Rod Reiss","Marco Bott","Keith Shadis","Nile Dok","Ymir Fritz"],
+"Jujutsu Kaisen":["Yuji Itadori","Megumi Fushiguro","Nobara Kugisaki","Satoru Gojo","Ryomen Sukuna","Maki Zenin","Toge Inumaki","Panda","Aoi Todo","Kento Nanami","Suguru Geto","Mahito","Jogo","Hanami","Choso","Yuta Okkotsu","Kenjaku","Toji Fushiguro","Mai Zenin","Noritoshi Kamo","Kasumi Miwa","Momo Nishimiya","Masamichi Yaga","Naoya Zenin","Naobito Zenin","Yuki Tsukumo","Hakari Kinji","Kirara Hoshi","Uraume","Junpei Yoshino","Rika Orimoto","Eso","Kechizu","Ijichi Kiyotaka","Takuma Ino","Reggie Star"]
+};
+const ALL="الكل (خلط الأنميات)";
+const $=s=>document.querySelector(s),app=$('#app');
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const load=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let S=Object.assign({n:5,anime:ALL,mode:'random',manual:1,mins:3,names:[]},load('ai_set',{}));
+let ST=Object.assign({rounds:0,imp:0,ply:0},load('ai_stats',{}));
+let used=load('ai_used',[]);
+let R=null,tm=null;
+const persist=()=>save('ai_set',S);
+function show(html){app.innerHTML='<div class="screen">'+html+'</div>'}
+function nm(i){return (S.names[i]||'').trim()||'لاعب '+(i+1)}
+
+function home(){
+ clearInterval(tm);
+ if(S.manual>S.n)S.manual=S.n;
+ const animes=[ALL,...Object.keys(DB)];
+ show(`<div class="top"><div><h1>Anime <b>Imposter</b> 🎭</h1><p class="sub">اكشف المخادع بين أصدقائك</p></div><button class="ic" onclick="stats()" aria-label="الإحصائيات">📊</button></div>
+ <div class="card"><h3>عدد اللاعبين</h3><div class="row"><div class="step"><button onclick="chg('n',1)">+</button><span>${S.n}</span><button onclick="chg('n',-1)">−</button></div><button class="chip cy" onclick="names()">✏️ الأسماء</button></div></div>
+ <div class="card"><h3>الأنمي</h3><div class="chips">${animes.map(a=>`<button class="chip ${S.anime===a?'on':''}" onclick="setA(${animes.indexOf(a)})">${a}</button>`).join('')}</div></div>
+ <div class="card"><h3>اختيار الإمبوستر</h3><div class="chips"><button class="chip cy ${S.mode==='random'?'on':''}" onclick="setM('random')">🎲 عشوائي</button><button class="chip cy ${S.mode==='manual'?'on':''}" onclick="setM('manual')">🎯 تحديد رقمه</button></div>
+ ${S.mode==='manual'?`<div class="row" style="margin-top:14px"><span>رقم الإمبوستر</span><div class="step"><button onclick="chg('manual',1)">+</button><span>${S.manual}</span><button onclick="chg('manual',-1)">−</button></div></div>`:''}</div>
+ <div class="card"><div class="row"><h3 style="margin:0">مؤقت النقاش (دقائق)</h3><div class="step"><button onclick="chg('mins',1)">+</button><span>${S.mins}</span><button onclick="chg('mins',-1)">−</button></div></div></div>
+ <button class="btn" onclick="start()">ابدأ اللعبة</button>`);
+}
+function chg(k,d){const lim={n:[3,10],manual:[1,S.n],mins:[1,15]}[k];S[k]=Math.max(lim[0],Math.min(lim[1],S[k]+d));if(k==='n'&&S.manual>S.n)S.manual=S.n;persist();home()}
+function setA(i){S.anime=[ALL,...Object.keys(DB)][i];persist();home()}
+function setM(m){S.mode=m;persist();home()}
+function names(){
+ show(`<h2>أسماء اللاعبين</h2><p class="sub">اتركها فارغة لاستخدام الأرقام</p>${Array.from({length:S.n},(_,i)=>`<input type="text" maxlength="14" id="n${i}" placeholder="لاعب ${i+1}" value="${esc(S.names[i]||'')}">`).join('')}<button class="btn" onclick="saveNames()">حفظ</button>`);
+}
+function saveNames(){for(let i=0;i<S.n;i++)S.names[i]=($('#n'+i)||{value:''}).value;persist();home()}
+
+function pick(){
+ const keys=S.anime===ALL?Object.keys(DB):[S.anime];
+ let pool=[];keys.forEach(k=>DB[k].forEach(c=>pool.push(k+'|'+c)));
+ let fresh=pool.filter(x=>!used.includes(x));
+ if(!fresh.length){used=used.filter(x=>!pool.includes(x));fresh=pool}
+ const c=fresh[Math.floor(Math.random()*fresh.length)];
+ used.push(c);save('ai_used',used);
+ const [a,ch]=c.split('|');return {anime:a,ch};
+}
+function start(){
+ const c=pick();
+ const imp=S.mode==='manual'?S.manual-1:Math.floor(Math.random()*S.n);
+ R={c,imp,i:0,shown:false};
+ turn();
+}
+function turn(){
+ const p=R.i,last=p===R.n-1;
+ show(`<div class="prog"><i style="width:${(R.i/S.n)*100}%"></i></div><div class="big"><div class="who">الدور على</div><div class="name">${esc(nm(R.i))}</div><p class="sub">تأكد أن اللاعبين الآخرين لا ينظرون إلى الشاشة</p><button class="btn" onclick="reveal()">👁️ اكشف بطاقتك</button></div>`);
+}
+function reveal(){
+ const isI=R.i===R.imp,last=R.i===S.n-1;
+ show(`<div class="prog"><i style="width:${((R.i+1)/S.n)*100}%"></i></div><div class="who" style="text-align:center">${esc(nm(R.i))}</div>
+ <div class="secret ${isI?'imp':''}">${isI?'<small>دورك</small><strong>🎭 أنت الإمبوستر</strong>':`<small>الشخصية السرية</small><strong>${esc(R.c.ch)}</strong>`}</div>
+ <button class="btn" onclick="next()">${last?'🙈 إخفاء وبدء النقاش':'🙈 إخفاء وتمرير الهاتف'}</button>`);
+}
+function next(){R.i++;if(R.i>=S.n)discuss();else turn()}
+
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function discuss(){
+ clearInterval(tm);R.left=S.mins*60;R.run=false;
+ show(`<h2 style="text-align:center">مرحلة النقاش 🗣️</h2><p class="sub" style="text-align:center">اسألوا بعضكم دون ذكر الاسم مباشرة، ثم صوّتوا على المشتبه به</p>
+ <div class="timer" id="tm">${fmt(R.left)}</div>
+ <div class="grid2"><button class="btn alt" id="tb" onclick="toggleT()">▶ ابدأ</button><button class="btn alt" onclick="resetT()">↺ إعادة</button></div>
+ <button class="btn" onclick="result()">🔎 كشف الإمبوستر</button>
+ <button class="btn ghost" onclick="home()">إلغاء والعودة للإعدادات</button>`);
+}
+function toggleT(){
+ if(R.run){clearInterval(tm);R.run=false;$('#tb').textContent='▶ متابعة';return}
+ if(R.left<=0)resetT();
+ R.run=true;$('#tb').textContent='⏸ إيقاف';
+ tm=setInterval(()=>{R.left--;const e=$('#tm');if(!e){clearInterval(tm);return}e.textContent=fmt(R.left);
+  if(R.left<=0){clearInterval(tm);R.run=false;e.classList.add('end');$('#tb').textContent='▶ ابدأ';alarm()}},1000);
+}
+function resetT(){clearInterval(tm);R.run=false;R.left=S.mins*60;const e=$('#tm');if(e){e.textContent=fmt(R.left);e.classList.remove('end')}const b=$('#tb');if(b)b.textContent='▶ ابدأ'}
+function alarm(){
+ try{navigator.vibrate&&navigator.vibrate([300,150,300,150,500])}catch(e){}
+ try{const C=new(window.AudioContext||window.webkitAudioContext)();[0,.25,.5].forEach(t=>{const o=C.createOscillator(),g=C.createGain();o.frequency.value=880;g.gain.value=.25;o.connect(g);g.connect(C.destination);o.start(C.currentTime+t);o.stop(C.currentTime+t+.15)})}catch(e){}
+}
+function result(){
+ clearInterval(tm);
+ show(`<h2 style="text-align:center">النتيجة 🎬</h2>
+ <div class="secret imp"><small>الإمبوستر هو</small><strong>${esc(nm(R.imp))}</strong></div>
+ <div class="secret"><small>الشخصية كانت · ${esc(R.c.anime)}</small><strong>${esc(R.c.ch)}</strong></div>
+ <div class="card"><h3>من فاز في هذه الجولة؟</h3><div class="grid2"><button class="btn alt" onclick="win('ply')">🕵️ اللاعبون</button><button class="btn alt" onclick="win('imp')">🎭 الإمبوستر</button></div></div>
+ <button class="btn ghost" onclick="win(null)">تخطي دون تسجيل</button>`);
+}
+function win(w){
+ if(w){ST.rounds++;ST[w]++;save('ai_stats',ST)}
+ start();
+}
+function stats(){
+ show(`<div class="top"><h2>إحصائيات الجولات</h2><button class="ic" onclick="home()" aria-label="رجوع">✕</button></div>
+ <div class="grid2"><div class="card stat"><b>${ST.rounds}</b><span>جولات مسجلة</span></div><div class="card stat"><b>${ST.rounds?Math.round(ST.ply/ST.rounds*100):0}%</b><span>نسبة فوز اللاعبين</span></div><div class="card stat"><b>${ST.ply}</b><span>فوز اللاعبين</span></div><div class="card stat"><b>${ST.imp}</b><span>فوز الإمبوستر</span></div></div>
+ <div class="card stat"><b>${used.length}</b><span>شخصيات ظهرت (من ${Object.values(DB).reduce((a,b)=>a+b.length,0)})</span></div>
+ <button class="btn alt" onclick="if(confirm('مسح كل الإحصائيات؟')){ST={rounds:0,imp:0,ply:0};used=[];save('ai_stats',ST);save('ai_used',used);stats()}">مسح الإحصائيات</button>`);
+}
+home();
+</script>
+</body>
+</html>
